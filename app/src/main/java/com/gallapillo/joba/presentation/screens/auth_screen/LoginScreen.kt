@@ -1,26 +1,29 @@
-package com.gallapillo.joba.presentation.screens
+package com.gallapillo.joba.presentation.screens.auth_screen
 
+import android.widget.Toast
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.Button
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.OutlinedTextField
-import androidx.compose.material.Text
+import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import com.gallapillo.joba.common.Response
+import com.gallapillo.joba.common.Screen
+import com.gallapillo.joba.presentation.screens.auth_screen.AuthenticationViewModel
 
 @Composable
 fun LoginScreen(
-    navController: NavController
+    navController: NavController,
+    viewModel: AuthenticationViewModel
 ) {
     Box(modifier= Modifier.fillMaxSize()) {
 
@@ -39,15 +42,7 @@ fun LoginScreen(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Text(
-                text = "Bidlogramm",
-                style = MaterialTheme.typography.body2,
-                modifier = Modifier
-                    .width(250.dp)
-                    .padding(top = 16.dp)
-                    .padding(8.dp)
-            )
-            Text(
-                text = "Sign In",
+                text = "Вход в учетную запись",
                 modifier = Modifier.padding(10.dp),
                 fontSize = 30.sp,
                 fontFamily = FontFamily.SansSerif
@@ -75,13 +70,35 @@ fun LoginScreen(
             )
             Button(
                 onClick = {
-
+                    viewModel.signIn(
+                        email = emailState.value,
+                        password = passwordState.value
+                    )
                 },
                 modifier = Modifier.padding(8.dp)
             ) {
                 Text(
                     text = "Войти"
                 )
+                when (val response = viewModel.signInState.value) {
+                    is Response.Loading -> {
+                        CircularProgressIndicator(
+                            modifier = Modifier.fillMaxSize()
+                        )
+                    }
+                    is Response.Error -> {
+                        Toast.makeText(LocalContext.current, response.message, Toast.LENGTH_LONG).show()
+                    }
+                    is Response.Success -> {
+                        if (response.data) {
+                            navController.navigate(Screen.MainScreen.route) {
+                                popUpTo(Screen.LoginScreen.route) {
+                                    inclusive = true
+                                }
+                            }
+                        }
+                    }
+                }
             }
         }
     }
