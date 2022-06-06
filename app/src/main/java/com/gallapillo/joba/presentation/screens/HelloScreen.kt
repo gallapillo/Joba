@@ -26,10 +26,8 @@ fun HelloScreen(
     navController: NavController,
     viewModel: AuthenticationViewModel
 ) {
-    val response = viewModel.isUserAuthenticated
-
     Column(modifier = Modifier.fillMaxSize()) {
-        if (!response) {
+        if (!viewModel.isUserAuthenticated) {
             Spacer(modifier = Modifier.padding(top = 48.dp))
             Image(
                 painter = painterResource(id = R.drawable.ic_hero_image),

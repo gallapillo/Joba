@@ -5,6 +5,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.gallapillo.joba.common.Response
+import com.gallapillo.joba.domain.model.User
 import com.gallapillo.joba.domain.use_case.auth.AuthenticateUseCases
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.collect
@@ -49,9 +50,9 @@ class AuthenticationViewModel @Inject constructor(
         }
     }
 
-    fun signUp(email: String, password: String,userName: String) {
+    fun signUp(user: User) {
         viewModelScope.launch {
-            authUseCases.firebaseSignUp(email = email, password = password, userName = userName).collect {
+            authUseCases.firebaseSignUp(user).collect {
                 _signUpState.value = it
             }
         }

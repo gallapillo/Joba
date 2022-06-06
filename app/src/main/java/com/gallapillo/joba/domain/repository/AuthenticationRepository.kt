@@ -1,6 +1,7 @@
 package com.gallapillo.joba.domain.repository
 
 import com.gallapillo.joba.common.Response
+import com.gallapillo.joba.domain.model.User
 import kotlinx.coroutines.flow.Flow
 
 interface AuthenticationRepository {
@@ -12,5 +13,5 @@ interface AuthenticationRepository {
 
     fun firebaseSignOut(): Flow<Response<Boolean>>
 
-    fun firebaseSignUp(email: String, password: String, userName: String): Flow<Response<Boolean>>
+    fun firebaseSignUp(user: User): Flow<Response<Boolean>>
 }

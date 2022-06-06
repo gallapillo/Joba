@@ -23,7 +23,8 @@ class AuthenticationRepositoryImpl @Inject constructor(
         return auth.currentUser != null
     }
 
-    @ExperimentalCoroutinesApi
+    // @ExperimentalCoroutinesApi
+    @OptIn(ExperimentalCoroutinesApi::class)
     override fun getFirebaseAuthState(): Flow<Boolean> = callbackFlow {
         val authStateListener = FirebaseAuth.AuthStateListener {
             trySend(auth.currentUser == null)
@@ -58,20 +59,17 @@ class AuthenticationRepositoryImpl @Inject constructor(
     }
 
     override fun firebaseSignUp(
-        email: String,
-        password: String,
-        userName: String
+        user: User
     ): Flow<Response<Boolean>> = flow {
         operationSuccessful = false
         try {
             emit(Response.Loading)
-            auth.createUserWithEmailAndPassword(email, password).addOnSuccessListener {
+            auth.createUserWithEmailAndPassword(user.email, user.password).addOnSuccessListener {
                 operationSuccessful = true
             }.await()
             if (operationSuccessful) {
                 val userId = auth.currentUser?.uid!!
-                val obj = User(userId = userId, password = password, email = email)
-                firestore.collection("Users").document(userId).set(obj).addOnSuccessListener {
+                firestore.collection("Users").document(userId).set(user).addOnSuccessListener {
 
                 }.await()
                 emit(Response.Success(operationSuccessful))

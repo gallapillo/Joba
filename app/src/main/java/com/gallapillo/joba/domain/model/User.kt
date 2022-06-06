@@ -7,6 +7,8 @@ data class User (
     var email : String = "",
     var password: String = "",
     var userRole: String = "worker",
+    var birthDay: String = "",
+    var gender: String = "Other",
     var resume: List<Resume> = emptyList(),
     var vacancy: List<Vacancy> = emptyList()
 )
