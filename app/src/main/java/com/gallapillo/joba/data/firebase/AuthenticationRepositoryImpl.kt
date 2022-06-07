@@ -69,6 +69,7 @@ class AuthenticationRepositoryImpl @Inject constructor(
             }.await()
             if (operationSuccessful) {
                 val userId = auth.currentUser?.uid!!
+                user.userId = userId
                 firestore.collection("Users").document(userId).set(user).addOnSuccessListener {
 
                 }.await()

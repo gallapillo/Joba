@@ -10,5 +10,6 @@ data class User (
     var birthDay: String = "",
     var gender: String = "Other",
     var resume: List<Resume> = emptyList(),
-    var vacancy: List<Vacancy> = emptyList()
+    var vacancy: List<Vacancy> = emptyList(),
+    var company: Company = Company()
 )

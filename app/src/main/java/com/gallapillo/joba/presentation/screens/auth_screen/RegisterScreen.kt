@@ -26,8 +26,12 @@ import androidx.navigation.NavController
 import com.gallapillo.joba.common.Constants
 import com.gallapillo.joba.common.Response
 import com.gallapillo.joba.common.Screen
+import com.gallapillo.joba.common.isAdult
 import com.gallapillo.joba.domain.model.User
 import com.gallapillo.joba.presentation.screens.auth_screen.AuthenticationViewModel
+import java.text.SimpleDateFormat
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 import java.util.*
 
 @ExperimentalMaterialApi
@@ -74,7 +78,19 @@ fun RegisterScreen(
         val datePickerDialog = DatePickerDialog(
             context,
             { _: DatePicker, mYear: Int, mMonth: Int, mDayOfMonth: Int ->
-                birthDayState.value = "$mDayOfMonth/${mMonth+1}/$mYear"
+                if (mDayOfMonth < 10) {
+                    birthDayState.value = "0$mDayOfMonth-${mMonth+1}-$mYear"
+                } else {
+                    birthDayState.value = "$mDayOfMonth-${mMonth+1}-$mYear"
+                }
+                if (mMonth < 10) {
+                    birthDayState.value = "$mDayOfMonth-${mMonth+1}-$mYear"
+                } else {
+                    birthDayState.value = "$mDayOfMonth-0${mMonth+1}-$mYear"
+                }
+                if (mDayOfMonth < 10 && mMonth < 10) {
+                    birthDayState.value = "0$mDayOfMonth-0${mMonth+1}-$mYear"
+                }
             }, year, month, days
         )
 
@@ -192,16 +208,49 @@ fun RegisterScreen(
             )
             Button(
                 onClick = {
-                    viewModel.signUp(
-                       User(
-                           email = emailState.value,
-                           password = passwordState.value,
-                           name = nameState.value,
-                           surName = surNameState.value,
-                           gender = selectedOptionText.value,
-                           birthDay = birthDayState.value,
-                       )
-                    )
+                    // Check for validate forms
+                    if (nameState.value.isBlank()) {
+                        makeText(context, "Введите имя", Toast.LENGTH_LONG).show()
+                    } else {
+                        if (surNameState.value.isBlank()) {
+                            makeText(context, "Введите фамилию", Toast.LENGTH_LONG).show()
+                        } else {
+                            if (passwordState.value != confirmPasswordState.value) {
+                                makeText(context, "Пароли не совподают", Toast.LENGTH_LONG).show()
+                            } else {
+                                if (!birthDayState.value.contains("[0-9]".toRegex())) {
+                                    makeText(context, "Введите свою дату рождения", Toast.LENGTH_LONG).show()
+                                } else {
+                                    // for new test
+                                    val dateFormatInput = DateTimeFormatter.ofPattern("dd-MM-yyyy")
+                                    val date = LocalDate.parse(birthDayState.value, dateFormatInput)
+                                    val currentDate = LocalDate.now()
+                                    if (!isAdult(date, currentDate)) {
+                                        makeText(context, "Вы не совершеннолетний!", Toast.LENGTH_LONG).show()
+                                    } else {
+                                        if (emailState.value.isBlank()) {
+                                            makeText(context, "Введите почту", Toast.LENGTH_LONG).show()
+                                        } else {
+                                            if (passwordState.value.isBlank()) {
+                                                makeText(context, "Введите пароль", Toast.LENGTH_LONG).show()
+                                            } else {
+                                                viewModel.signUp(
+                                                    User(
+                                                        email = emailState.value,
+                                                        password = passwordState.value,
+                                                        name = nameState.value,
+                                                        surName = surNameState.value,
+                                                        gender = selectedOptionText.value,
+                                                        birthDay = birthDayState.value,
+                                                    )
+                                                )
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
                 },
                 modifier = Modifier.padding(8.dp)
             ) {
@@ -215,7 +264,7 @@ fun RegisterScreen(
                         )
                     }
                     is Response.Error -> {
-                        makeText(LocalContext.current, response.message, Toast.LENGTH_LONG).show()
+                        makeText(context, response.message, Toast.LENGTH_LONG).show()
                     }
                     is Response.Success -> {
                         if (response.data) {
