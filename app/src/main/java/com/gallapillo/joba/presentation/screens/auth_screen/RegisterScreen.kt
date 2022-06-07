@@ -1,14 +1,10 @@
 package com.gallapillo.joba.presentation.screens.auth_screen
 
-import android.annotation.SuppressLint
+
 import android.app.DatePickerDialog
 import android.widget.DatePicker
 import android.widget.Toast
 import android.widget.Toast.makeText
-import androidx.compose.animation.core.MutableTransitionState
-import androidx.compose.animation.core.animateFloat
-import androidx.compose.animation.core.tween
-import androidx.compose.animation.core.updateTransition
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
@@ -28,8 +24,6 @@ import com.gallapillo.joba.common.Response
 import com.gallapillo.joba.common.Screen
 import com.gallapillo.joba.common.isAdult
 import com.gallapillo.joba.domain.model.User
-import com.gallapillo.joba.presentation.screens.auth_screen.AuthenticationViewModel
-import java.text.SimpleDateFormat
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import java.util.*

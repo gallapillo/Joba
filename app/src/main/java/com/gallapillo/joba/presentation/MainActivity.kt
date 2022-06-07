@@ -3,18 +3,20 @@ package com.gallapillo.joba.presentation
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.material.ExperimentalMaterialApi
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Surface
+import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.*
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.gallapillo.joba.common.Screen
-import com.gallapillo.joba.presentation.screens.HelloScreen
+import com.gallapillo.joba.common.currentRoute
+import com.gallapillo.joba.presentation.items.BottomNavItem
+import com.gallapillo.joba.presentation.items.BottomNavigationBar
+import com.gallapillo.joba.presentation.screens.*
 import com.gallapillo.joba.presentation.screens.auth_screen.LoginScreen
 import com.gallapillo.joba.presentation.screens.auth_screen.RegisterScreen
-import com.gallapillo.joba.presentation.screens.VacancyScreen
 import com.gallapillo.joba.presentation.screens.auth_screen.AuthenticationViewModel
 import com.gallapillo.joba.presentation.theme.JobaTheme
 import dagger.hilt.android.AndroidEntryPoint
@@ -26,10 +28,49 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             JobaTheme {
-                Surface(color = MaterialTheme.colors.background) {
-                    val navController = rememberNavController()
+                val navController = rememberNavController()
 
-                    val authenticationViewModel: AuthenticationViewModel = hiltViewModel()
+                val scaffoldState = rememberScaffoldState(rememberDrawerState(DrawerValue.Closed))
+
+                val authenticationViewModel: AuthenticationViewModel = hiltViewModel()
+
+                val routes = listOf(Screen.HelloScreen.route, Screen.RegisterScreen.route, Screen.LoginScreen.route)
+
+                Scaffold(
+                    bottomBar = {
+                        if (!routes.contains(currentRoute(navController))) {
+                            BottomNavigationBar(
+                                items = listOf(
+                                    BottomNavItem(
+                                        name = "Вакансии",
+                                        route = Screen.MainScreen.route,
+                                        icon = Icons.Default.Home
+                                    ),
+                                    BottomNavItem(
+                                        name = "Поиск вакансий",
+                                        route = Screen.SearchScreen.route,
+                                        icon = Icons.Default.Search
+                                    ),
+                                    BottomNavItem(
+                                        name = "Отклики",
+                                        route = Screen.ResponsesScreen.route,
+                                        icon = Icons.Default.Notifications
+                                    ),
+                                    BottomNavItem(
+                                        name = "Мой профиль",
+                                        route = Screen.ProfileScreen.route,
+                                        icon = Icons.Default.Person
+                                    )
+                                ),
+                                navController = navController,
+                                onItemClick = {
+                                    navController.navigate(it.route)
+                                }
+                            )
+                        }
+                    },
+                    scaffoldState = scaffoldState
+                ) {
 
                     NavHost(
                         navController = navController,
@@ -45,7 +86,16 @@ class MainActivity : ComponentActivity() {
                             RegisterScreen(navController, authenticationViewModel)
                         }
                         composable(route = Screen.MainScreen.route) {
-                            VacancyScreen()
+                            VacancyScreen(navController)
+                        }
+                        composable(route = Screen.SearchScreen.route) {
+                            SearchVacancyScreen(navController = navController)
+                        }
+                        composable(route = Screen.ResponsesScreen.route) {
+                            ResponsesScreen(navController = navController)
+                        }
+                        composable(route = Screen.ProfileScreen.route) {
+                            ProfileScreen(navController = navController)
                         }
                     }
                 }

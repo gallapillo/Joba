@@ -1,6 +1,7 @@
 package com.gallapillo.joba.presentation.screens.auth_screen
 
 import android.widget.Toast
+import android.widget.Toast.makeText
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
@@ -18,7 +19,6 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.gallapillo.joba.common.Response
 import com.gallapillo.joba.common.Screen
-import com.gallapillo.joba.presentation.screens.auth_screen.AuthenticationViewModel
 
 @Composable
 fun LoginScreen(
@@ -26,6 +26,8 @@ fun LoginScreen(
     viewModel: AuthenticationViewModel
 ) {
     Box(modifier= Modifier.fillMaxSize()) {
+
+        val context = LocalContext.current
 
         val emailState = remember {
             mutableStateOf("")
@@ -70,10 +72,18 @@ fun LoginScreen(
             )
             Button(
                 onClick = {
-                    viewModel.signIn(
-                        email = emailState.value,
-                        password = passwordState.value
-                    )
+                    if (emailState.value.isBlank()) {
+                        makeText(context, "Введите почту", Toast.LENGTH_LONG).show()
+                    } else {
+                        if (passwordState.value.isBlank()) {
+                            makeText(context, "Введите пароль", Toast.LENGTH_LONG).show()
+                        } else {
+                            viewModel.signIn(
+                                email = emailState.value,
+                                password = passwordState.value
+                            )
+                        }
+                    }
                 },
                 modifier = Modifier.padding(8.dp)
             ) {
@@ -87,7 +97,7 @@ fun LoginScreen(
                         )
                     }
                     is Response.Error -> {
-                        Toast.makeText(LocalContext.current, response.message, Toast.LENGTH_LONG).show()
+                        makeText(context, response.message, Toast.LENGTH_LONG).show()
                     }
                     is Response.Success -> {
                         if (response.data) {

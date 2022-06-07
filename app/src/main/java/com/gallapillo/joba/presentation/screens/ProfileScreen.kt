@@ -9,14 +9,12 @@ import androidx.navigation.NavController
 
 
 @Composable
-fun VacancyScreen(
+fun ProfileScreen(
     navController: NavController
 ) {
-
     Column(modifier = Modifier.fillMaxSize()) {
         Column(modifier = Modifier.weight(1f)) {
-            Text(text = "VACANCY")
+            Text(text = "Profile")
         }
-        // BottomNavigationMenu(selectedItem = BottomNavigationItem.HOME, navController = navController)
     }
 }

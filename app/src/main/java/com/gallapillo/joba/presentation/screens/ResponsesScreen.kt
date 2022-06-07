@@ -9,14 +9,13 @@ import androidx.navigation.NavController
 
 
 @Composable
-fun VacancyScreen(
+fun ResponsesScreen(
     navController: NavController
 ) {
-
     Column(modifier = Modifier.fillMaxSize()) {
         Column(modifier = Modifier.weight(1f)) {
-            Text(text = "VACANCY")
+            Text(text = "Responses")
         }
-        // BottomNavigationMenu(selectedItem = BottomNavigationItem.HOME, navController = navController)
+
     }
 }
