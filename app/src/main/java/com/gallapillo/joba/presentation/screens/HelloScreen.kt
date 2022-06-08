@@ -12,6 +12,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontStyle
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
@@ -20,6 +22,7 @@ import com.gallapillo.joba.common.Response
 import com.gallapillo.joba.common.Screen
 import com.gallapillo.joba.presentation.screens.auth_screen.AuthenticationViewModel
 import com.gallapillo.joba.presentation.theme.TextColor
+import com.gallapillo.joba.presentation.theme.fontFamily
 
 @Composable
 fun HelloScreen(
@@ -38,13 +41,17 @@ fun HelloScreen(
                 "Найдите удаленную работу вашей мечты",
                 modifier = Modifier.padding(start = 20.dp, end = 20.dp),
                 color = TextColor,
-                fontSize = 24.sp
+                fontSize = 24.sp,
+                fontFamily = fontFamily,
+                fontWeight = FontWeight.ExtraBold
             )
             Spacer(modifier = Modifier.padding(top = 12.dp))
             Text(
                 "Создайте резюме или отправьте отклик на вакансию в компанию с мировым именем и рабоатайте по свободному графику",
                 modifier = Modifier.padding(start = 20.dp, end = 20.dp),
-                color = TextColor
+                color = TextColor,
+                fontFamily = fontFamily,
+                fontWeight = FontWeight.Normal
             )
             Spacer(modifier = Modifier.padding(top = 96.dp))
             Row {
@@ -58,7 +65,11 @@ fun HelloScreen(
                         navController.navigate(Screen.LoginScreen.route)
                     }
                 ) {
-                    Text("Войти")
+                    Text(
+                        "Войти",
+                        fontFamily = fontFamily,
+                        fontWeight = FontWeight.ExtraBold
+                    )
                 }
                 Button(
                     modifier = Modifier.padding(start = 20.dp),
@@ -66,7 +77,11 @@ fun HelloScreen(
                         navController.navigate(Screen.RegisterScreen.route)
                     }
                 ) {
-                    Text("Регистрация")
+                    Text(
+                        "Регистрация",
+                        fontFamily = fontFamily,
+                        fontWeight = FontWeight.ExtraBold
+                    )
                 }
             }
         } else {

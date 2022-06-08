@@ -11,5 +11,6 @@ data class User (
     var gender: String = "Other",
     var resume: List<Resume> = emptyList(),
     var vacancy: List<Vacancy> = emptyList(),
-    var company: Company = Company()
+    var company: Company = Company(),
+    var wannaFindJob: Int = 0
 )

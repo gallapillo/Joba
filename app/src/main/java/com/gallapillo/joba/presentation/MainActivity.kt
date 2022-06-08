@@ -17,13 +17,14 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.gallapillo.joba.common.Screen
-import com.gallapillo.joba.common.currentRoute
 import com.gallapillo.joba.presentation.items.BottomNavItem
 import com.gallapillo.joba.presentation.items.BottomNavigationBar
 import com.gallapillo.joba.presentation.screens.*
 import com.gallapillo.joba.presentation.screens.auth_screen.LoginScreen
 import com.gallapillo.joba.presentation.screens.auth_screen.RegisterScreen
 import com.gallapillo.joba.presentation.screens.auth_screen.AuthenticationViewModel
+import com.gallapillo.joba.presentation.screens.profile.ProfileScreen
+import com.gallapillo.joba.presentation.screens.profile.UserViewModel
 import com.gallapillo.joba.presentation.theme.JobaTheme
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -38,11 +39,8 @@ class MainActivity : ComponentActivity() {
                 var showBottomBar by rememberSaveable { mutableStateOf(true) }
                 val navBackStackEntry by navController.currentBackStackEntryAsState()
 
-                val scaffoldState = rememberScaffoldState(rememberDrawerState(DrawerValue.Closed))
-
                 val authenticationViewModel: AuthenticationViewModel = hiltViewModel()
-
-                val routes = listOf(Screen.HelloScreen.route, Screen.RegisterScreen.route, Screen.LoginScreen.route)
+                val userViewModel: UserViewModel = hiltViewModel()
 
                 showBottomBar = when (navBackStackEntry?.destination?.route) {
                     Screen.HelloScreen.route -> false
@@ -53,7 +51,6 @@ class MainActivity : ComponentActivity() {
 
                 Scaffold(
                     bottomBar = {
-                        // !routes.contains(currentRoute(navController))
                         if (showBottomBar) {
                             BottomNavigationBar(
                                 items = listOf(
@@ -116,7 +113,7 @@ class MainActivity : ComponentActivity() {
                             ResponsesScreen(navController = navController)
                         }
                         composable(route = Screen.ProfileScreen.route) {
-                            ProfileScreen(navController = navController)
+                            ProfileScreen(navController = navController, userViewModel, authenticationViewModel)
                         }
                     }
                 }

@@ -14,6 +14,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -24,6 +25,7 @@ import com.gallapillo.joba.common.Response
 import com.gallapillo.joba.common.Screen
 import com.gallapillo.joba.common.isAdult
 import com.gallapillo.joba.domain.model.User
+import com.gallapillo.joba.presentation.theme.fontFamily
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import java.util.*
@@ -99,7 +101,8 @@ fun RegisterScreen(
                 text = "Регистрация пользователя",
                 modifier = Modifier.padding(10.dp),
                 fontSize = 30.sp,
-                fontFamily = FontFamily.SansSerif
+                fontFamily = fontFamily,
+                fontWeight = FontWeight.ExtraBold
             )
             OutlinedTextField(
                 value = nameState.value,
@@ -108,7 +111,11 @@ fun RegisterScreen(
                 },
                 modifier = Modifier.padding(10.dp),
                 label = {
-                    Text(text = "Имя")
+                    Text(
+                        text = "Имя",
+                        fontFamily = fontFamily,
+                        fontWeight = FontWeight.Normal
+                    )
                 }
             )
             OutlinedTextField(
@@ -118,17 +125,31 @@ fun RegisterScreen(
                 },
                 modifier = Modifier.padding(10.dp),
                 label = {
-                    Text(text = "Фамилия")
+                    Text(
+                        text = "Фамилия",
+                        fontFamily = fontFamily,
+                        fontWeight = FontWeight.Normal
+                    )
                 }
             )
             // TODO:(gallapillo) maybe upgrade a birth day update registration form
-            Text(text = "Дата рождения: ${birthDayState.value}", fontSize = 14.sp, textAlign = TextAlign.Center)
+            Text(
+                text = "Дата рождения: ${birthDayState.value}",
+                fontSize = 14.sp,
+                textAlign = TextAlign.Center,
+                fontFamily = fontFamily,
+                fontWeight = FontWeight.Normal
+            )
             Button(
                 onClick = {
                     datePickerDialog.show()
                 }
             ) {
-                Text(text = "Выбрать дату рождения")
+                Text(
+                    text = "Выбрать дату рождения",
+                    fontFamily = fontFamily,
+                    fontWeight = FontWeight.Normal
+                )
             }
             // GENDER CHOSE
             ExposedDropdownMenuBox(
@@ -141,7 +162,11 @@ fun RegisterScreen(
                     readOnly = true,
                     value = selectedOptionText.value,
                     onValueChange = { },
-                    label = { Text("Ваш пол") },
+                    label = { Text(
+                        "Ваш пол",
+                        fontFamily = fontFamily,
+                        fontWeight = FontWeight.Normal
+                    ) },
                     trailingIcon = {
                         ExposedDropdownMenuDefaults.TrailingIcon(
                             expanded = expanded.value
@@ -175,7 +200,11 @@ fun RegisterScreen(
                 },
                 modifier = Modifier.padding(10.dp),
                 label = {
-                    Text(text = "Email")
+                    Text(
+                        text = "Email",
+                        fontFamily = fontFamily,
+                        fontWeight = FontWeight.Normal
+                    )
                 }
             )
             OutlinedTextField(
@@ -185,7 +214,11 @@ fun RegisterScreen(
                 },
                 modifier = Modifier.padding(10.dp),
                 label = {
-                    Text(text = "Пароль")
+                    Text(
+                        text = "Пароль",
+                        fontFamily = fontFamily,
+                        fontWeight = FontWeight.Normal
+                    )
                 },
                 visualTransformation = PasswordVisualTransformation()
             )
@@ -196,7 +229,11 @@ fun RegisterScreen(
                 },
                 modifier = Modifier.padding(10.dp),
                 label = {
-                    Text(text = "Повторите пароль")
+                    Text(
+                        text = "Повторите пароль",
+                        fontFamily = fontFamily,
+                        fontWeight = FontWeight.Normal
+                    )
                 },
                 visualTransformation = PasswordVisualTransformation()
             )
@@ -249,7 +286,9 @@ fun RegisterScreen(
                 modifier = Modifier.padding(8.dp)
             ) {
                 Text(
-                    text = "Зарегистрироватся"
+                    text = "Зарегистрироватся",
+                    fontFamily = fontFamily,
+                    fontWeight = FontWeight.Normal
                 )
                 when (val response = viewModel.signUpState.value) {
                     is Response.Loading -> {

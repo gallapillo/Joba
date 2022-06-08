@@ -13,12 +13,14 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.gallapillo.joba.common.Response
 import com.gallapillo.joba.common.Screen
+import com.gallapillo.joba.presentation.theme.fontFamily
 
 @Composable
 fun LoginScreen(
@@ -47,7 +49,8 @@ fun LoginScreen(
                 text = "Вход в учетную запись",
                 modifier = Modifier.padding(10.dp),
                 fontSize = 30.sp,
-                fontFamily = FontFamily.SansSerif
+                fontFamily = fontFamily,
+                fontWeight = FontWeight.ExtraBold
             )
             OutlinedTextField(
                 value = emailState.value,
@@ -56,7 +59,11 @@ fun LoginScreen(
                 },
                 modifier = Modifier.padding(10.dp),
                 label = {
-                    Text(text = "Email")
+                    Text(
+                        text = "Email",
+                        fontFamily = fontFamily,
+                        fontWeight = FontWeight.Normal
+                    )
                 }
             )
             OutlinedTextField(
@@ -66,7 +73,11 @@ fun LoginScreen(
                 },
                 modifier = Modifier.padding(10.dp),
                 label = {
-                    Text(text = "Пароль")
+                    Text(
+                        text = "Пароль",
+                        fontFamily = fontFamily,
+                        fontWeight = FontWeight.Normal
+                    )
                 },
                 visualTransformation = PasswordVisualTransformation()
             )
@@ -88,7 +99,9 @@ fun LoginScreen(
                 modifier = Modifier.padding(8.dp)
             ) {
                 Text(
-                    text = "Войти"
+                    text = "Войти",
+                    fontFamily = fontFamily,
+                    fontWeight = FontWeight.Normal
                 )
                 when (val response = viewModel.signInState.value) {
                     is Response.Loading -> {

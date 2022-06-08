@@ -1,9 +1,12 @@
 package com.gallapillo.joba.di
 
 import com.gallapillo.joba.data.firebase.AuthenticationRepositoryImpl
+import com.gallapillo.joba.data.firebase.UserRepositoryImpl
 import com.gallapillo.joba.domain.repository.AuthenticationRepository
+import com.gallapillo.joba.domain.repository.UserRepository
 import com.gallapillo.joba.domain.use_case.auth.AuthenticateUseCases
 import com.gallapillo.joba.domain.use_case.firebase.*
+import com.gallapillo.joba.domain.use_case.user.GetUser
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
@@ -39,6 +42,18 @@ object AppModule {
     @Provides
     fun provideAuthenticationRepository(auth: FirebaseAuth, firestore: FirebaseFirestore): AuthenticationRepository {
         return AuthenticationRepositoryImpl(auth = auth, firestore = firestore)
+    }
+
+    @Singleton
+    @Provides
+    fun provideUserRepository(firebaseFirestore: FirebaseFirestore) : UserRepository {
+        return UserRepositoryImpl(firebaseFirestore = firebaseFirestore)
+    }
+
+    @Singleton
+    @Provides
+    fun provideUserUseCases(repository: UserRepositoryImpl) : GetUser {
+        return GetUser(repository = repository)
     }
 
     @Singleton

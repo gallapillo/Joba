@@ -2,9 +2,17 @@ package com.gallapillo.joba.presentation.theme
 
 import androidx.compose.material.Typography
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
+import com.gallapillo.joba.R
+
+val fontFamily = FontFamily(
+    Font(R.font.firasans_regular, FontWeight.Normal),
+    Font(R.font.firasans_medium, FontWeight.Medium),
+    Font(R.font.firasans_extrabold, FontWeight.ExtraBold)
+)
 
 // Set of Material typography styles to start with
 val Typography = Typography(
