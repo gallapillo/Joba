@@ -101,6 +101,7 @@ fun LoginScreen(
                     }
                     is Response.Success -> {
                         if (response.data) {
+                            // TODO(gallapillo): need fix this transition maybe set hello screen
                             navController.navigate(Screen.MainScreen.route) {
                                 popUpTo(Screen.LoginScreen.route) {
                                     inclusive = true

@@ -6,9 +6,15 @@ import androidx.activity.compose.setContent
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.gallapillo.joba.common.Screen
 import com.gallapillo.joba.common.currentRoute
@@ -29,6 +35,8 @@ class MainActivity : ComponentActivity() {
         setContent {
             JobaTheme {
                 val navController = rememberNavController()
+                var showBottomBar by rememberSaveable { mutableStateOf(true) }
+                val navBackStackEntry by navController.currentBackStackEntryAsState()
 
                 val scaffoldState = rememberScaffoldState(rememberDrawerState(DrawerValue.Closed))
 
@@ -36,9 +44,17 @@ class MainActivity : ComponentActivity() {
 
                 val routes = listOf(Screen.HelloScreen.route, Screen.RegisterScreen.route, Screen.LoginScreen.route)
 
+                showBottomBar = when (navBackStackEntry?.destination?.route) {
+                    Screen.HelloScreen.route -> false
+                    Screen.RegisterScreen.route -> false
+                    Screen.LoginScreen.route -> false
+                    else -> true
+                }
+
                 Scaffold(
                     bottomBar = {
-                        if (!routes.contains(currentRoute(navController))) {
+                        // !routes.contains(currentRoute(navController))
+                        if (showBottomBar) {
                             BottomNavigationBar(
                                 items = listOf(
                                     BottomNavItem(
@@ -64,14 +80,19 @@ class MainActivity : ComponentActivity() {
                                 ),
                                 navController = navController,
                                 onItemClick = {
-                                    navController.navigate(it.route)
+                                    navController.navigate(it.route) {
+                                        popUpTo(navController.graph.findStartDestination().id) {
+                                            saveState = true
+                                        }
+                                        launchSingleTop = true
+                                        restoreState = true
+                                    }
                                 }
                             )
                         }
-                    },
-                    scaffoldState = scaffoldState
+                    }
+                    //scaffoldState = scaffoldState
                 ) {
-
                     NavHost(
                         navController = navController,
                         startDestination = Screen.HelloScreen.route

@@ -3,6 +3,7 @@ package com.gallapillo.joba.presentation.items
 import androidx.compose.foundation.layout.Column
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
@@ -20,14 +21,14 @@ fun BottomNavigationBar(
     modifier: Modifier = Modifier,
     onItemClick: (BottomNavItem) -> Unit
 ) {
-    val backStackEntry = navController.currentBackStackEntryAsState()
+    val backStackEntry by navController.currentBackStackEntryAsState()
     BottomNavigation(
         modifier = modifier,
         backgroundColor = MaterialTheme.colors.background,
         elevation = 5.dp
     ) {
         items.forEach { item ->
-            val selected = item.route == backStackEntry.value?.destination?.route
+            val selected = item.route == backStackEntry?.destination?.route
                 BottomNavigationItem(
                 selected = selected,
                 onClick = {

@@ -72,9 +72,9 @@ fun HelloScreen(
         } else {
             Text("Works i'm authenticated")
             navController.navigate(Screen.MainScreen.route) {
-                /*popUpTo(Screen.HelloScreen.route) {
+                popUpTo(Screen.HelloScreen.route) {
                     inclusive = true
-                }*/
+                }
             }
         }
     }
