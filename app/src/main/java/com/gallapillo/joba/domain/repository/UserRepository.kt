@@ -9,4 +9,6 @@ interface UserRepository {
     fun getUserById(userId: String) : Flow<Response<User>>
 
     fun getAllUsers(userId: String) : Flow<List<User>>
+
+    fun saveUserChanges(user: User) : Flow<Response<Boolean>>
 }

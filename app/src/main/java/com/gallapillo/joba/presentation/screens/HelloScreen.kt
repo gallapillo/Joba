@@ -17,6 +17,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import androidx.navigation.NavGraph.Companion.findStartDestination
 import com.gallapillo.joba.R
 import com.gallapillo.joba.common.Response
 import com.gallapillo.joba.common.Screen
@@ -62,7 +63,11 @@ fun HelloScreen(
                         contentColor = TextColor
                     ),
                     onClick = {
-                        navController.navigate(Screen.LoginScreen.route)
+                        navController.navigate(Screen.LoginScreen.route) {
+                            popUpTo(navController.graph.findStartDestination().id) {
+                                inclusive = true
+                            }
+                        }
                     }
                 ) {
                     Text(
@@ -74,7 +79,11 @@ fun HelloScreen(
                 Button(
                     modifier = Modifier.padding(start = 20.dp),
                     onClick = {
-                        navController.navigate(Screen.RegisterScreen.route)
+                        navController.navigate(Screen.RegisterScreen.route) {
+                            popUpTo(Screen.HelloScreen.route) {
+                                inclusive = true
+                            }
+                        }
                     }
                 ) {
                     Text(

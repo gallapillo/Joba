@@ -88,7 +88,6 @@ class MainActivity : ComponentActivity() {
                             )
                         }
                     }
-                    //scaffoldState = scaffoldState
                 ) {
                     NavHost(
                         navController = navController,

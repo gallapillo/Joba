@@ -18,8 +18,10 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import androidx.navigation.NavGraph.Companion.findStartDestination
 import com.gallapillo.joba.common.Response
 import com.gallapillo.joba.common.Screen
+import com.gallapillo.joba.common.popUpToTop
 import com.gallapillo.joba.presentation.theme.fontFamily
 
 @Composable
@@ -105,9 +107,7 @@ fun LoginScreen(
                 )
                 when (val response = viewModel.signInState.value) {
                     is Response.Loading -> {
-                        CircularProgressIndicator(
-                            modifier = Modifier.fillMaxSize()
-                        )
+
                     }
                     is Response.Error -> {
                         makeText(context, response.message, Toast.LENGTH_LONG).show()
@@ -115,7 +115,7 @@ fun LoginScreen(
                     is Response.Success -> {
                         if (response.data) {
                             // TODO(gallapillo): need fix this transition maybe set hello screen
-                            navController.navigate(Screen.MainScreen.route) {
+                            navController.navigate(Screen.HelloScreen.route) {
                                 popUpTo(Screen.LoginScreen.route) {
                                     inclusive = true
                                 }

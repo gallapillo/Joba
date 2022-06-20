@@ -9,12 +9,16 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.tasks.await
 import javax.inject.Inject
 
 
 class UserRepositoryImpl @Inject constructor (
     private val firebaseFirestore: FirebaseFirestore
 ) : UserRepository {
+
+    private var operationSuccessful = false
 
     @OptIn(ExperimentalCoroutinesApi::class)
     override fun getUserById(userId: String): Flow<Response<User>> = callbackFlow {
@@ -37,5 +41,26 @@ class UserRepositoryImpl @Inject constructor (
 
     override fun getAllUsers(userId: String): Flow<List<User>>  = callbackFlow {
 
+    }
+
+    override fun saveUserChanges(user: User): Flow<Response<Boolean>> = flow {
+        operationSuccessful = false
+        try {
+            val userObj = mutableMapOf<String, Any>()
+            userObj["name"] = user.name
+            userObj["surName"] = user.surName
+            userObj["wannaFindJob"] = user.wannaFindJob
+            firebaseFirestore.collection(USERS_COLLECTION).document(user.userId).update(userObj as Map<String, Any>)
+                .addOnSuccessListener {
+                    operationSuccessful = true
+                }.await()
+            if (operationSuccessful) {
+                emit(Response.Success(operationSuccessful))
+            } else {
+                emit(Response.Error("Edit error"))
+            }
+        } catch (e: Exception) {
+            Response.Error(e.localizedMessage ?: "Unexcepted error ocurred")
+        }
     }
 }

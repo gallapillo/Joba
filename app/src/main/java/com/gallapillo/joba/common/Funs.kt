@@ -2,7 +2,9 @@ package com.gallapillo.joba.common
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.navigation.NavController
 import androidx.navigation.NavHostController
+import androidx.navigation.NavOptionsBuilder
 import androidx.navigation.compose.currentBackStackEntryAsState
 import java.time.LocalDate
 import java.time.Period
@@ -17,4 +19,10 @@ fun isAdult(birthDate: LocalDate, currentDate: LocalDate): Boolean {
 fun currentRoute(navController: NavHostController): String? {
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     return navBackStackEntry?.destination?.route
+}
+
+fun NavOptionsBuilder.popUpToTop(navController: NavController) {
+    popUpTo(navController.currentBackStackEntry?.destination?.route ?: return) {
+        inclusive =  true
+    }
 }

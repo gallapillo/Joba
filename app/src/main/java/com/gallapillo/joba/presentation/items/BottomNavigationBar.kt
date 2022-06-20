@@ -6,6 +6,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -13,6 +14,7 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.gallapillo.joba.presentation.theme.BorderColor
 import com.gallapillo.joba.presentation.theme.HoverBackground
+import com.gallapillo.joba.presentation.theme.fontFamily
 
 @Composable
 fun BottomNavigationBar(
@@ -59,7 +61,9 @@ fun BottomNavigationBar(
                             Text(
                                 text = item.name,
                                 textAlign = TextAlign.Center,
-                                fontSize = 10.sp
+                                fontSize = 10.sp,
+                                fontFamily = fontFamily,
+                                fontWeight = FontWeight.Normal
                             )
                         }
                     }
