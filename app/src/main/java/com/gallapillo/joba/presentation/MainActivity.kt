@@ -103,7 +103,7 @@ class MainActivity : ComponentActivity() {
                             RegisterScreen(navController, authenticationViewModel)
                         }
                         composable(route = Screen.MainScreen.route) {
-                            VacancyScreen(navController)
+                            VacancyScreen(navController, userViewModel, authenticationViewModel)
                         }
                         composable(route = Screen.SearchScreen.route) {
                             SearchVacancyScreen(navController = navController)
