@@ -79,9 +79,9 @@ fun RegisterScreen(
                     birthDayState.value = "$mDayOfMonth-${mMonth+1}-$mYear"
                 }
                 if (mMonth < 10) {
-                    birthDayState.value = "$mDayOfMonth-${mMonth+1}-$mYear"
-                } else {
                     birthDayState.value = "$mDayOfMonth-0${mMonth+1}-$mYear"
+                } else {
+                    birthDayState.value = "$mDayOfMonth-${mMonth+1}-$mYear"
                 }
                 if (mDayOfMonth < 10 && mMonth < 10) {
                     birthDayState.value = "0$mDayOfMonth-0${mMonth+1}-$mYear"

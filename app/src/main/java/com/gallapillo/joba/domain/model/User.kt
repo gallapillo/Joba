@@ -11,7 +11,7 @@ data class User(
     var userRole: String = "worker",
     var birthDay: String = "",
     var gender: String = "Other",
-    var resume: List<Resume> = emptyList(),
+    var resume: MutableList<Resume> = emptyList<Resume>().toMutableList(),
     var vacancy: List<Vacancy> = emptyList(),
     var company: Company = Company(),
     var wannaFindJob: Int = Constants.SearchStatus.IN_ACTIVE_SEARCH.ordinal

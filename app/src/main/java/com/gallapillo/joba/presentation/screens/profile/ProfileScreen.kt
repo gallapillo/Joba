@@ -2,9 +2,11 @@ package com.gallapillo.joba.presentation.screens.profile
 
 import android.widget.Toast
 import android.widget.Toast.makeText
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.layout.R
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ExitToApp
@@ -14,6 +16,8 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.Dp
@@ -23,8 +27,10 @@ import androidx.navigation.NavController
 import com.gallapillo.joba.common.Constants
 import com.gallapillo.joba.common.Response
 import com.gallapillo.joba.common.Screen
+import com.gallapillo.joba.domain.model.Resume
 import com.gallapillo.joba.domain.model.User
 import com.gallapillo.joba.presentation.screens.auth_screen.AuthenticationViewModel
+import com.gallapillo.joba.presentation.theme.BorderColor
 import com.gallapillo.joba.presentation.theme.fontFamily
 import kotlinx.coroutines.launch
 
@@ -125,8 +131,9 @@ fun ProfileScreen(
                     },
                     sheetState = sheetState
                 ) {
-                    Spacer(modifier = Modifier.padding(top = 12.dp))
-                    Row(horizontalArrangement = Arrangement.End) {
+
+                    Row(modifier = Modifier.height(56.dp).fillMaxWidth(), verticalAlignment = Alignment.CenterVertically){
+                        Spacer(Modifier.weight(1f).fillMaxHeight().padding(top = 12.dp, end = 12.dp))
                         Icon(
                             imageVector = Icons.Default.ExitToApp,
                             contentDescription = "Sign out button",
@@ -149,7 +156,7 @@ fun ProfileScreen(
                                         }
                                     }
                                 }
-                            }
+                            }.padding(end = 12.dp)
                         )
                     }
 
@@ -160,7 +167,12 @@ fun ProfileScreen(
                     ) {
 
                         Spacer(modifier = Modifier.padding(top = 32.dp))
-                        Text(text = user.name, fontSize = 48.sp)
+                        Text(
+                            text = user.name,
+                            fontFamily = fontFamily,
+                            fontWeight = FontWeight.Normal,
+                            fontSize = 48.sp
+                        )
                         Spacer(modifier = Modifier.padding(top = 16.dp))
                         Text(
                             text = wannaJob.value,
@@ -172,9 +184,18 @@ fun ProfileScreen(
                                 }
                             }
                         )
+                        if (user.resume.isEmpty()) {
+                            EmptyResumeCard()
+                        } else {
+                            val resume = user.resume[0]
+                            ResumeCard(resume)
+                        }
                         Spacer(modifier = Modifier.padding(top = 48.dp))
-                        Row(verticalAlignment = Alignment.CenterVertically) {
-                            Button(onClick = {  }) {
+                        Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.Center) {
+                            Button(onClick = {
+                                // Переход на другой экран создание резюме
+                                navController.navigate(Screen.FirstStepCreateResumeScreen.route)
+                            }) {
                                 Text(
                                     "Создать новое резюме",
                                     fontFamily = fontFamily,
@@ -192,9 +213,39 @@ fun ProfileScreen(
                 modifier = Modifier.fillMaxSize()
             ) {
                 Column (modifier = Modifier.weight(1f), horizontalAlignment = Alignment.CenterHorizontally) {
-                    Text(text = "ERRPR WITH PROFILE")
+                    Text(text = "ERROR WITH PROFILE")
                 }
             }
+        }
+    }
+}
+
+@Composable
+fun ResumeCard(
+    resume: Resume
+) {
+
+}
+
+@Composable
+fun EmptyResumeCard() {
+    Row(
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.Center,
+        modifier = Modifier
+            .padding(vertical = 32.dp, horizontal = 16.dp)
+            .clip(RoundedCornerShape(10.dp))
+            .background(BorderColor)
+    ) {
+        Column(
+            modifier = Modifier
+                .padding(vertical = 96.dp, horizontal = 64.dp)
+        ) {
+            Text(
+                text = "У вас отсутсвует резюме",
+                fontFamily = fontFamily,
+                fontWeight = FontWeight.Normal
+            )
         }
     }
 }

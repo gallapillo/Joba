@@ -23,6 +23,10 @@ import com.gallapillo.joba.presentation.screens.*
 import com.gallapillo.joba.presentation.screens.auth_screen.LoginScreen
 import com.gallapillo.joba.presentation.screens.auth_screen.RegisterScreen
 import com.gallapillo.joba.presentation.screens.auth_screen.AuthenticationViewModel
+import com.gallapillo.joba.presentation.screens.create_resume.FirstStepCreateResumeScreen
+import com.gallapillo.joba.presentation.screens.create_resume.ResumeViewModel
+import com.gallapillo.joba.presentation.screens.create_resume.SecondStepCreateResume
+import com.gallapillo.joba.presentation.screens.create_resume.ThirdStepCreateResume
 import com.gallapillo.joba.presentation.screens.profile.ProfileScreen
 import com.gallapillo.joba.presentation.screens.profile.UserViewModel
 import com.gallapillo.joba.presentation.theme.JobaTheme
@@ -41,11 +45,15 @@ class MainActivity : ComponentActivity() {
 
                 val authenticationViewModel: AuthenticationViewModel = hiltViewModel()
                 val userViewModel: UserViewModel = hiltViewModel()
+                val resumeViewModel: ResumeViewModel = hiltViewModel()
 
                 showBottomBar = when (navBackStackEntry?.destination?.route) {
                     Screen.HelloScreen.route -> false
                     Screen.RegisterScreen.route -> false
                     Screen.LoginScreen.route -> false
+                    Screen.FirstStepCreateResumeScreen.route -> false
+                    Screen.SecondStepCreateResumeScreen.route -> false
+                    Screen.ThirdStepCreateResumeScreen.route -> false
                     else -> true
                 }
 
@@ -113,6 +121,15 @@ class MainActivity : ComponentActivity() {
                         }
                         composable(route = Screen.ProfileScreen.route) {
                             ProfileScreen(navController = navController, userViewModel, authenticationViewModel)
+                        }
+                        composable(route = Screen.FirstStepCreateResumeScreen.route) {
+                            FirstStepCreateResumeScreen(navController = navController, resumeViewModel = resumeViewModel, userViewModel = userViewModel)
+                        }
+                        composable(route = Screen.SecondStepCreateResumeScreen.route) {
+                            SecondStepCreateResume(navController = navController, resumeViewModel)
+                        }
+                        composable(route = Screen.ThirdStepCreateResumeScreen.route) {
+                            ThirdStepCreateResume(navController = navController, resumeViewModel)
                         }
                     }
                 }
